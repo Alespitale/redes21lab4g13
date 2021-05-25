@@ -1,5 +1,10 @@
 # Laboratorio 4
 
+# Integrantes:
+
+- Agustin Silva
+- Alejandro Spitale
+- Facundo Buc
 
 ## Introducción
 
@@ -75,8 +80,6 @@ Una buena mejora sería que se envíen los datos hacias las dos salidas que tien
 
 #### Caso 2: interArrivalTime = 1
 
-
-
 ![buffersc2](img_kickstart/buffers_c2.jpg)
 
 - Primero cabe resaltar que el buffer del nodo 4 es prácticamente constante pues solo genera paquetes y los envia, creando una ineficiencia en el uso de la red mandando los paquetes en sentido horario, cuando podría enviarlos en un solo salto al nodo destino.
@@ -107,8 +110,90 @@ Una buena mejora sería que se envíen los datos hacias las dos salidas que tien
 
 ![saltos_c2](img_kickstart/saltos_c2.jpg)
 
--La cantidad de saltos entre los dos interArrivalTime no varian pues el hacer un uso ineficiente de la red, hace que en vez en de buscar el camino mas corto envie los paquetes hacia la derecha.
+- La cantidad de saltos entre los dos interArrivalTime no varian pues el hacer un uso ineficiente de la red, hace que en vez en de buscar el camino mas corto envie los paquetes hacia la derecha.
 
 
+## Diseño
 
+### Caso 1
 
+![nodo0](img_p2/nodo0_c1.jpeg)
+
+- Podemos ver como se mejora el problema de congestión en el nodo 0, ya que ahora estamos enviando los paquetes generados en el nodo 2 en sentido antihorario. Con esto estamos logrando un uso eficiente de la red.
+
+![nodo2](img_p2/nodo2_c1.jpeg)
+
+- La generación de este nodo esta igual que en la parte 1.
+
+![delay](img_p2/delay5_c1.jpeg)
+
+- Ahora podemos ver que el delay del buffer 5 ya no crece de manera constante, si no que mantiene valores estables.
+
+![hop](img_p2/hop_c1.jpeg)
+
+- A comparacion del caso anterior que hace un uso ineficiente de la red, en este caso los saltos son siempre 3, ya que tenemos el mejor camino hacia el destino en los dos nodos.
+
+![scalar](img_p2/scalar_c1.jpeg)
+
+- El promedio de delay es aprox 6.9, y un total 379 paquetes recibidos en el nodo de destino.
+
+## Caso 2
+
+### InterArrivalTime = 1
+
+![ink0](img_p2/ink0_c2.jpeg)
+
+- Al principio todos los nodos generan paquetes hacia la izquierda, una vez que se setea la direccion de los nodos 6,7,0 envian paquetes hacia la derecha, entontonces el ink[0] para los demas nodos no se usa, el nodo 0 no sufre congestion pues genera y envia paquetes hacia la derecha, entonces mientras el nodo este mas cerca del destino mas congestion tendra.
+
+![ink1](img_p2/ink1_c2.jpeg)
+
+- Al principio todos los nodos generan paquetes hacia la izquierda, una vez que se setea la direccion los nodos del 1 al 4 envian paquetes hacia la izquierda, entonces el ink[1] para los demas nodos no se usa, el nodo 1 es el unico que no sufre de congestion pues lo unico que hace es generar paquetes y enviarlos, entonces mientras el nodo este mas cerca del destino mas congestion tendra.
+
+![delay5](img_p2/delay5_c2.jpeg)
+
+- El delay a comparacion de la implementacion anterior se mejora, pues se hace un uso mas eficiente.
+
+![hop](img_p2/hop_c2.jpeg)
+
+- Al generarse paquetes a gran velocidad tenemos la particularidad de encontrar varios saltos en medidas tardias del grafico
+porque al principio del programa enviamos todos los paquetes generados en sentido antihorario y el paquete Start en sentido
+horario para lograr equilibrar la red a medias, y los últimos paquetes enviados hacia el sentido antihorario de los nodos 0, 6 y 7
+van a tener delay en llegar a destino por la congestión generada, y así mostrando la cantidad de saltos de dichos saltos en demora.
+
+![scalar](img_p2/scalar_c2.jpeg)
+
+- El delay promedio es aprox 64, y un total de 389 paquetes recibidos en el nodo de destino.
+
+### InterArrivalTime = 5
+
+![ink0](img_p2/ink0_5c2.jpeg)
+
+![ink1](img_p2/ink1_7c2.jpeg)
+
+- Se puede observar que los buffers no van a sufrir congestion, pues no crecen constantemente como con un interArrivalTime de 1, es el caso optimo para el algoritmo implementado.
+
+![delay5](img_p2/delay5_7c2.jpeg)
+
+- Acá podemos ver que el delay del nodo 5 no supera los 11 segundos, y se mantiene con valores estables y bajos sin superar ese máximo.
+
+![hop](img_p2/hop_7c2.jpeg)
+
+- En este caso los 7 saltos aparecen al principio, pues los buffers no se llenan tan rapido como con un interArrivalTime de 1.
+
+![scalar](img_p2/scalar_7c2.jpeg)
+
+- El delay promedio es aprox 3.2, y un total de 271 paquetes recibidos en el nodo de destino.
+
+## Preguntas:
+
+1- ¿Cuánto mejoran las métricas? ¿Por qué?
+
+- Las métricas mejoran aprox un 60% respecto al delay. Porque estamos haciendo un mejor uso de la red, y de enrutamiento de los nodos.
+
+2- ¿Hay loops de enrutamiento?
+
+- No ocurren, porque cada nodo sabe cual es su destino.
+
+3- ¿Ve alguna manera demejorar más aún su diseño?
+
+- Si, haciendo que el nodo 1 envie paquetes para la izquierda y derecha intercaladamente.
