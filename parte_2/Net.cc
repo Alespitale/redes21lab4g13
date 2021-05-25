@@ -42,7 +42,7 @@ void Net::initialize() {
        sendInicialization = new cMessage("sendEvent");
        scheduleAt(par("interArrivalTime"), sendInicialization);
     }
-    direction = rand()%2;
+    direction = true;
 }
 
 void Net::finish() {
@@ -63,13 +63,11 @@ void Net::handleMessage(cMessage *msg) {
         if (msg->getKind() != index){
             if(index >= 1 && index <= 4){
                 srt->setDirection(true);
-                direction = srt->getDirection();
-                send(srt, "toLnk$o", 0);
             }else{
                 srt->setDirection(false);
-                direction = srt->getDirection();
-                send(srt, "toLnk$o", 0);
             }
+            direction = srt->getDirection();
+            send(srt, "toLnk$o", 0);
         } else {
             delete(msg);
         }
@@ -85,6 +83,7 @@ void Net::handleMessage(cMessage *msg) {
             if (msg->arrivedOn("toApp$i")){
                 pkt->setDirection(direction);
             }
+
             // Depending of the packets direction, send the packet left or rigth
             if (pkt->getDirection()){
                 send(pkt, "toLnk$o", 1);
