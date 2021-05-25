@@ -61,3 +61,54 @@ Una buena mejora sería que se envíen los datos hacias las dos salidas que tien
 - Una opcion sencilla sería enviar un paquete a cada salida.
 - Otra es que se elija la salida de forma aleatoria.
 
+### Caso 2
+
+`Asuma ahora que todos los nodos (0,1,2,3,4,6,7,8)generan tráfico hacia elnode[5]conpacketByteSizeeinterArrivalTimeidénticosentre todos los nodos.Explore y determine a partir de qué valor deinterArrivalTimese puede garantizar unequilibrio o estabilidad en la red. Justifique.`
+
+- Primero podemos observar que con un interArrivalTime identico al del caso uno, el uso de la red es ineficiente.
+
+- Como el tamaño de los buffers y el tiempo de vida de cada paquete no tienen limite, por lo que no hay perdida de paquete, se asume que la red es inestable cuando el delay entre que un nodo se crea y llega a destino es muy cercano al tiempo de vida de la simulacion.
+
+- Por lo que para que la red sea estable los buffers no deben tener un crecimiento constante si no que se mantengan en cierto limite, y el delay se mantenga constante y no crezca indefinidamente.
+
+- Buscamos entonces un valor de InterArrivalTime tal que no sea muy grande, ya que estaríamos desperdiciando y limitando la velocidad de transferencia de la red, y tal que no sea muy chico ya que estaríamos sobrecargando los buffers de manera exponencial y generando un crecimiento del delay constante.
+
+#### Caso 2: interArrivalTime = 1
+
+
+
+![buffersc2](img_kickstart/buffers_c2.jpg)
+
+- Primero cabe resaltar que el buffer del nodo 4 es prácticamente constante pues solo genera paquetes y los envia, creando una ineficiencia en el uso de la red mandando los paquetes en sentido horario, cuando podría enviarlos en un solo salto al nodo destino.
+
+- Entre los demás buffers, los más afectados son el 6 y 7, pues le llegan paquetes generados por los demás nodos, generando congestión en los mismos.
+
+![delayc2](img_kickstart/delay_c2.jpg)
+
+- Por lo explicado anteriormente, el delay crece constantemente, en este caso son 200s pero en una simulacion con tiempo mayo el delay no dejaria de crecer.
+
+![scalars_c2](img_kickstart/scalars_c2.jpg)
+
+- El promedio de delay es aprox 40s, y un total de 375 paquetes recibidos en el nodo de destino.
+
+### Caso 2: interArrivalTime = 7.1
+
+![buff_7](img_kickstart/buff_7.jpg)
+
+- Ahora los buffers no crecen constantemente, el buffer 6 y 7 son los que van a sufrir un poco de congestion pero no excesiva.
+
+![dely_7](img_kickstart/dely_7.jpg)
+
+- El delay tampoco crece de manera constante, se mantiene dentro de un rango estable.
+
+![scalars_7](img_kickstart/scalars_7.jpg)
+
+- El delay pasa a un valor aprox de 8s y la cantidad de paquetes recibidos en el nodo de destino en 200s es 215.
+
+![saltos_c2](img_kickstart/saltos_c2.jpg)
+
+-La cantidad de saltos entre los dos interArrivalTime no varian pues el hacer un uso ineficiente de la red, hace que en vez en de buscar el camino mas corto envie los paquetes hacia la derecha.
+
+
+
+
